@@ -10,7 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_05_082012) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_065705) do
+  create_table "authors", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "authorships", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.integer "book_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id", "book_id"], name: "index_authorships_on_author_id_and_book_id", unique: true
+    t.index ["author_id"], name: "index_authorships_on_author_id"
+    t.index ["book_id"], name: "index_authorships_on_book_id"
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_books_on_category_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "first_name"
@@ -19,4 +50,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_05_082012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "authorships", "authors"
+  add_foreign_key "authorships", "books"
+  add_foreign_key "books", "categories"
 end

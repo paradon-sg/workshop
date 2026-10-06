@@ -1,16 +1,26 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Users" %>
 
-<h1>Users</h1>
+<%= render "layouts/flash" %>
 
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
-  <% end %>
+<div class="mb-6 flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">Users</h1>
+  <%= link_to "New user", new_user_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500" %>
 </div>
 
-<%= link_to "New user", new_user_path %>
+<div id="users" class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+  <% if @users.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @users.each do |user| %>
+        <li id="<%= dom_id user %>" class="flex items-center justify-between gap-4 px-5 py-4">
+          <div class="min-w-0">
+            <p class="truncate font-medium text-gray-900"><%= user.first_name %> <%= user.last_name %></p>
+            <p class="truncate text-sm text-gray-500"><%= user.email %></p>
+          </div>
+          <%= link_to "Show this user", user, class: "shrink-0 text-sm font-medium text-blue-600 hover:text-blue-500" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="px-5 py-10 text-center text-sm text-gray-500">No users yet.</p>
+  <% end %>
+</div>

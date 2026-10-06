@@ -1,0 +1,207 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "en-US"
+
+early_access: false
+
+tone_instructions: >
+  Be concise and practical.
+  Prioritize correctness, security, performance, and maintainability.
+  Do not report trivial style issues already handled by RuboCop.
+
+reviews:
+  profile: "chill"
+
+  request_changes_workflow: true
+
+  high_level_summary: true
+
+  sequence_diagrams: false
+
+  poem: false
+
+  review_status: true
+
+  changed_files_summary: true
+
+  path_filters:
+    - "!**/vendor/**"
+    - "!**/tmp/**"
+    - "!**/log/**"
+    - "!**/coverage/**"
+    - "!**/node_modules/**"
+
+  path_instructions:
+    - path: "**/*"
+      instructions: |
+        Review this Ruby on Rails application with these priorities:
+
+        1. Correctness
+           - Identify logic bugs and incorrect behavior.
+           - Check edge cases and unexpected nil values.
+           - Check transaction and error-handling behavior.
+
+        2. Rails best practices
+           - Follow standard Rails conventions.
+           - Keep controllers thin and move business logic to appropriate layers.
+           - Avoid unnecessary callbacks and complex model logic.
+           - Prefer clear and maintainable ActiveRecord code.
+
+        3. Database performance
+           - Detect N+1 queries.
+           - Detect unnecessary database queries.
+           - Check for inefficient ActiveRecord usage.
+           - Check whether indexes may be required for new query patterns.
+           - Pay attention to queries inside loops.
+
+        4. Security
+           - Check authentication and authorization.
+           - Check user-controlled parameters.
+           - Check SQL injection risks.
+           - Check mass-assignment and unsafe attribute updates.
+           - Check sensitive data exposure.
+           - Check insecure redirects and unsafe file handling.
+
+        5. Testing
+           - Check whether important behavior has appropriate tests.
+           - Prefer focused tests for changed behavior.
+           - Check edge cases and failure paths.
+           - Avoid tests that depend on implementation details unnecessarily.
+
+        6. Maintainability
+           - Prefer simple solutions over unnecessary abstractions.
+           - Flag duplicated business logic when it creates maintenance risk.
+           - Avoid methods/classes that are unnecessarily complex.
+           - Keep responsibilities separated.
+
+        7. Ruby style
+           - Follow the repository's .rubocop.yml.
+           - Use Ruby Style Guide conventions.
+           - Do not report formatting issues that RuboCop already handles unless they affect readability or correctness.
+
+    - path: "app/controllers/**/*.rb"
+      instructions: |
+        Review Rails controllers carefully.
+
+        Check for:
+        - Controllers becoming too large or containing business logic.
+        - Missing authentication or authorization.
+        - Strong parameter issues.
+        - Unnecessary database queries.
+        - N+1 queries.
+        - Incorrect HTTP status codes.
+        - Inconsistent error handling.
+
+    - path: "app/models/**/*.rb"
+      instructions: |
+        Review Rails models carefully.
+
+        Check for:
+        - Incorrect associations.
+        - Missing or incorrect validations.
+        - Callback side effects.
+        - N+1 query risks.
+        - Inefficient scopes.
+        - Business logic that should be moved to another layer.
+        - Transaction consistency.
+
+    - path: "app/services/**/*.rb"
+      instructions: |
+        Review service objects for:
+        - Clear single responsibility.
+        - Proper error handling.
+        - Transaction boundaries.
+        - Unnecessary complexity.
+        - Side effects that are difficult to test.
+        - Duplicate business logic.
+
+    - path: "app/queries/**/*.rb"
+      instructions: |
+        Review database query objects carefully.
+
+        Check for:
+        - N+1 queries.
+        - Missing indexes.
+        - Inefficient joins.
+        - Excessive database round trips.
+        - Queries that load unnecessary records or columns.
+        - Potential performance regressions with large datasets.
+
+    - path: "app/jobs/**/*.rb"
+      instructions: |
+        Review background jobs for:
+        - Idempotency.
+        - Retry safety.
+        - Proper exception handling.
+        - Race conditions.
+        - Duplicate processing.
+        - Transaction and external API interaction issues.
+
+    - path: "app/mailers/**/*.rb"
+      instructions: |
+        Review mailers for:
+        - Sensitive data exposure.
+        - Incorrect recipients.
+        - Missing required parameters.
+        - Unnecessary database queries.
+        - Consistent mailer behavior.
+
+    - path: "app/views/**/*.erb"
+      instructions: |
+        Review ERB templates for:
+        - XSS risks.
+        - Unsafe HTML rendering.
+        - N+1 queries caused by view code.
+        - Business logic in views.
+        - Accessibility issues where relevant.
+
+    - path: "db/migrate/**/*.rb"
+      instructions: |
+        Review Rails migrations carefully.
+
+        Check for:
+        - Safe schema changes.
+        - Missing indexes.
+        - Indexes on columns frequently used for lookup or foreign keys.
+        - Data migrations that may be too expensive.
+        - Potential table locking or downtime.
+        - Reversibility where appropriate.
+        - Production safety for large tables.
+
+    - path: "spec/**/*.rb"
+      instructions: |
+        Review RSpec tests for:
+        - Meaningful coverage of changed behavior.
+        - Missing edge cases.
+        - Missing failure-path tests.
+        - Fragile or implementation-detail-focused tests.
+        - Excessive mocking.
+        - Tests that may be flaky.
+
+    - path: "test/**/*.rb"
+      instructions: |
+        Review Rails tests for:
+        - Meaningful coverage of changed behavior.
+        - Missing edge cases.
+        - Failure-path coverage.
+        - Flaky tests.
+        - Excessive mocking or stubbing.
+
+  tools:
+    rubocop:
+      enabled: true
+
+    brakeman:
+      enabled: true
+
+    semgrep:
+      enabled: true
+
+    gitleaks:
+      enabled: true
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
