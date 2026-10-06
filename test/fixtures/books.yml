@@ -1,5 +1,9 @@
 good_omens:
   title: Good Omens
+  description: |
+    The world is ending on Saturday.
+
+    An angel and a demon would rather it didn't.
   category: fiction
 
 mort:

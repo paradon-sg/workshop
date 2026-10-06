@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.includes(:category, :authors).order(:title)
+    @books = Book.all.order(:title)
   end
 
   # GET /books/1
@@ -61,6 +61,6 @@ class BooksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def book_params
-      params.expect(book: [ :title, :category_id, author_ids: [] ])
+      params.expect(book: [ :title, :description, :category_id, author_ids: [] ])
     end
 end
