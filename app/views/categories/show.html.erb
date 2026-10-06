@@ -1,0 +1,31 @@
+<% content_for :title, @category.name %>
+
+<%= render "layouts/flash" %>
+
+<h1 class="mb-6 text-2xl font-bold text-gray-900"><%= @category.name %></h1>
+
+<div class="rounded-lg border border-gray-200 bg-white px-6 py-2 shadow-sm">
+  <%= render @category %>
+</div>
+
+<h2 class="mb-3 mt-8 text-lg font-semibold text-gray-900">Books</h2>
+
+<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+  <% if @category.books.order(:title).any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @category.books.order(:title).each do |book| %>
+        <li class="px-5 py-3">
+          <%= link_to book.title, book, class: "text-sm font-medium text-blue-600 hover:text-blue-500" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="px-5 py-6 text-center text-sm text-gray-500">No books yet.</p>
+  <% end %>
+</div>
+
+<div class="mt-6 flex flex-wrap items-center gap-4 text-sm font-medium">
+  <%= link_to "Edit this category", edit_category_path(@category), class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500" %>
+  <%= link_to "Back to categories", categories_path, class: "text-blue-600 hover:text-blue-500" %>
+  <%= button_to "Destroy this category", @category, method: :delete, form_class: "ml-auto", class: "cursor-pointer rounded-md border border-red-300 px-4 py-2 text-red-700 hover:bg-red-50", data: { turbo_confirm: "Delete this category?" } %>
+</div>
