@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all.order(:title)
+    @books = Book.order(:title)
   end
 
   # GET /books/1
