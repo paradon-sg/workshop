@@ -1,14 +1,14 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
-  # GET /users or /users.json
-  # Lists all users as HTML or JSON without pagination.
+  # GET /users
+  # Lists all users without pagination.
   def index
     @users = User.all
   end
 
-  # GET /users/1 or /users/1.json
-  # Displays the user loaded by set_user as HTML or JSON.
+  # GET /users/1
+  # Displays the user loaded by set_user.
   def show
   end
 
@@ -23,53 +23,40 @@ class UsersController < ApplicationController
   def edit
   end
 
-  # POST /users or /users.json
-  # Creates a user from user_params; redirects HTML to the user or returns JSON
-  # with status 201. If saving returns false, renders the new form or JSON errors
-  # with status 422. Parameter and database exceptions propagate.
+  # POST /users
+  # Creates a user from user_params and redirects to it. If saving returns
+  # false, renders the new form with status 422. Parameter and database
+  # exceptions propagate.
   def create
     @user = User.new(user_params)
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new, status: :unprocessable_content }
-        format.json { render json: @user.errors, status: :unprocessable_content }
-      end
+    if @user.save
+      redirect_to @user, notice: "User was successfully created."
+    else
+      render :new, status: :unprocessable_content
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
-  # Updates the user loaded by set_user with user_params; redirects HTML to the
-  # user with status 303 or returns JSON with status 200. If updating returns
-  # false, renders the edit form or JSON errors with status 422. Parameter and
-  # database exceptions propagate.
+  # PATCH/PUT /users/1
+  # Updates the user loaded by set_user with user_params and redirects to it
+  # with status 303. If updating returns false, renders the edit form with
+  # status 422. Parameter and database exceptions propagate.
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: "User was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit, status: :unprocessable_content }
-        format.json { render json: @user.errors, status: :unprocessable_content }
-      end
+    if @user.update(user_params)
+      redirect_to @user, notice: "User was successfully updated.", status: :see_other
+    else
+      render :edit, status: :unprocessable_content
     end
   end
 
-  # DELETE /users/1 or /users/1.json
-  # Destroys the user loaded by set_user; redirects HTML to the list with status
-  # 303 or returns an empty JSON response with status 204. Propagates
-  # ActiveRecord::RecordNotDestroyed if a callback aborts destruction, as well
-  # as database exceptions.
+  # DELETE /users/1
+  # Destroys the user loaded by set_user and redirects to the list with status
+  # 303. Propagates ActiveRecord::RecordNotDestroyed if a callback aborts
+  # destruction, as well as database exceptions.
   def destroy
     @user.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to users_path, notice: "User was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to users_path, notice: "User was successfully destroyed.", status: :see_other
   end
 
   private

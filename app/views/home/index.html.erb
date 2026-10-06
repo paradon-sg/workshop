@@ -1,0 +1,19 @@
+<% content_for :title, "Workshop" %>
+
+<%= render "layouts/flash" %>
+
+<h1 class="mb-6 text-2xl font-bold text-gray-900">Workshop</h1>
+
+<ul class="grid gap-4 sm:grid-cols-2">
+  <% @sections.each do |section| %>
+    <li>
+      <%= link_to section[:path], class: "block h-full rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:border-blue-300 hover:shadow" do %>
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 class="text-lg font-semibold text-gray-900"><%= section[:name] %></h2>
+          <span class="text-sm text-gray-500"><%= pluralize(section[:count], "record") %></span>
+        </div>
+        <p class="mt-2 text-sm text-gray-600"><%= section[:description] %></p>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,12 @@
+<% content_for :title, "Editing category" %>
+
+<h1 class="mb-6 text-2xl font-bold text-gray-900">Editing category</h1>
+
+<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+  <%= render "form", category: @category %>
+</div>
+
+<div class="mt-6 flex gap-4">
+  <%= link_to "Show this category", @category, class: "text-sm font-medium text-blue-600 hover:text-blue-500" %>
+  <%= link_to "Back to categories", categories_path, class: "text-sm font-medium text-blue-600 hover:text-blue-500" %>
+</div>
