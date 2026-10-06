@@ -1,5 +1,9 @@
 fiction:
   name: Fiction
+  description: |
+    Stories from the imagination.
+
+    Novels, short stories and more.
 
 science:
   name: Science

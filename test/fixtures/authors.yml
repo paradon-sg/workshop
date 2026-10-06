@@ -1,5 +1,9 @@
 terry:
   name: Terry Pratchett
+  description: |
+    English author of fantasy novels.
+
+    Best known for the Discworld series.
 
 neil:
   name: Neil Gaiman
