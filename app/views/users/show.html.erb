@@ -1,10 +1,15 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "User" %>
 
-<%= render @user %>
+<%= render "layouts/flash" %>
 
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
+<h1 class="mb-6 text-2xl font-bold text-gray-900"><%= @user.first_name %> <%= @user.last_name %></h1>
 
-  <%= button_to "Destroy this user", @user, method: :delete %>
+<div class="rounded-lg border border-gray-200 bg-white px-6 py-2 shadow-sm">
+  <%= render @user %>
+</div>
+
+<div class="mt-6 flex flex-wrap items-center gap-4 text-sm font-medium">
+  <%= link_to "Edit this user", edit_user_path(@user), class: "rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-500" %>
+  <%= link_to "Back to users", users_path, class: "text-blue-600 hover:text-blue-500" %>
+  <%= button_to "Destroy this user", @user, method: :delete, form_class: "ml-auto", class: "cursor-pointer rounded-md border border-red-300 px-4 py-2 text-red-700 hover:bg-red-50", data: { turbo_confirm: "Delete this user?" } %>
 </div>
