@@ -30,6 +30,13 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_equal [ authors(:neil) ], book.authors
   end
 
+  test "should create book with a description" do
+    post books_url, params: { book: { title: "Coraline", description: "A door to another world.", category_id: categories(:fiction).id } }
+
+    assert_redirected_to book_url(Book.last)
+    assert_equal "A door to another world.", Book.last.description
+  end
+
   test "should not create book without a category" do
     assert_no_difference("Book.count") do
       post books_url, params: { book: { title: "Orphan", category_id: "" } }
@@ -47,10 +54,33 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", author_path(authors(:neil)), text: "Neil Gaiman"
   end
 
+  test "should show description as paragraphs" do
+    get book_url(@book)
+
+    assert_select "dd p", "The world is ending on Saturday."
+    assert_select "dd p", "An angel and a demon would rather it didn't."
+  end
+
+  test "should show placeholder when description is blank" do
+    get book_url(books(:mort))
+
+    assert_select "dd", "No description"
+  end
+
+  test "should escape html in description" do
+    @book.update!(description: "<script>alert('book')</script>")
+
+    get book_url(@book)
+
+    assert_select "#book_#{@book.id} script", count: 0
+    assert_includes response.body, "&lt;script&gt;"
+  end
+
   test "should get edit" do
     get edit_book_url(@book)
 
     assert_response :success
+    assert_select "textarea[name=?]", "book[description]", text: /The world is ending on Saturday/
     assert_select "input[type=checkbox][value=?][checked]", authors(:terry).id.to_s
   end
 
