@@ -4,7 +4,8 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all.order(:title)
+    @query = params[:query]
+    @books = Book.search_by_title(@query).order(:title)
   end
 
   # GET /books/1

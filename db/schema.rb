@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_06_081831) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_06_091518) do
   create_table "authors", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
   end
 
   create_table "authorships", force: :cascade do |t|
@@ -40,6 +41,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_081831) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 

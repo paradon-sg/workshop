@@ -25,6 +25,13 @@ class AuthorsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to author_url(Author.last)
   end
 
+  test "should create author with a description" do
+    post authors_url, params: { author: { name: "Ursula K. Le Guin", description: "Wrote Earthsea." } }
+
+    assert_redirected_to author_url(Author.last)
+    assert_equal "Wrote Earthsea.", Author.last.description
+  end
+
   test "should not create author without a name" do
     assert_no_difference("Author.count") do
       post authors_url, params: { author: { name: "" } }
@@ -42,9 +49,33 @@ class AuthorsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", book_path(books(:mort)), text: "Mort"
   end
 
+  test "should show description as paragraphs" do
+    get author_url(@author)
+
+    assert_select "dd p", "English author of fantasy novels."
+    assert_select "dd p", "Best known for the Discworld series."
+  end
+
+  test "should show placeholder when description is blank" do
+    get author_url(authors(:neil))
+
+    assert_select "dd", "No description"
+  end
+
+  test "should escape html in description" do
+    @author.update!(description: "<script>alert('author')</script>")
+
+    get author_url(@author)
+
+    assert_select "#author_#{@author.id} script", count: 0
+    assert_includes response.body, "&lt;script&gt;"
+  end
+
   test "should get edit" do
     get edit_author_url(@author)
+
     assert_response :success
+    assert_select "textarea[name=?]", "author[description]", text: /English author of fantasy novels/
   end
 
   test "should update author" do

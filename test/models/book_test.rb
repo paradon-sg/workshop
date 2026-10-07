@@ -35,4 +35,16 @@ class BookTest < ActiveSupport::TestCase
     end
     assert Author.exists?(authors(:neil).id)
   end
+
+  test "search_by_title matches part of the title, ignoring case" do
+    assert_equal [ books(:good_omens) ], Book.search_by_title("omen").to_a
+  end
+
+  test "search_by_title returns all books when the query is blank" do
+    assert_equal Book.count, Book.search_by_title(" ").count
+  end
+
+  test "search_by_title treats LIKE wildcards literally" do
+    assert_empty Book.search_by_title("%")
+  end
 end
