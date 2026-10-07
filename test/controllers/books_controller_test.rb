@@ -12,6 +12,21 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_select "#book_#{@book.id}", text: /Good Omens.*Fiction.*Neil Gaiman, Terry Pratchett|Good Omens.*Fiction.*Terry Pratchett, Neil Gaiman/m
   end
 
+  test "should filter index by title" do
+    get books_url, params: { query: "mort" }
+
+    assert_response :success
+    assert_select "#book_#{books(:mort).id}"
+    assert_select "#book_#{@book.id}", count: 0
+  end
+
+  test "should show a message when no books match the search" do
+    get books_url, params: { query: "Nothing like this" }
+
+    assert_response :success
+    assert_select "p", text: "No books match \"Nothing like this\"."
+  end
+
   test "should get new with category and author choices" do
     get new_book_url
 
